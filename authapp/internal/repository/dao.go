@@ -1,6 +1,11 @@
 package repository
 
-import "database/sql"
+import (
+	"database/sql"
+	"os"
+
+	_ "github.com/lib/pq"
+)
 
 type DAO interface {
 }
@@ -14,5 +19,12 @@ func NewDAO() DAO {
 }
 
 func NewDB() (*sql.DB, error) {
-	return nil, nil
+	url := os.Getenv("POSTGRES_URL")
+
+	DB, err := sql.Open("postgres", url+"?sslmode=disable")
+	if err != nil {
+		return nil, err
+	}
+
+	return DB, nil
 }
