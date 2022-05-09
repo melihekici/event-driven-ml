@@ -3,11 +3,10 @@ package repository
 import (
 	"database/sql"
 	"os"
-
-	_ "github.com/lib/pq"
 )
 
 type DAO interface {
+	NewUserQuery() UserQuery
 }
 
 type dao struct{}
@@ -27,4 +26,8 @@ func NewDB() (*sql.DB, error) {
 	}
 
 	return DB, nil
+}
+
+func (d *dao) NewUserQuery() UserQuery {
+	return &userQuery{}
 }
